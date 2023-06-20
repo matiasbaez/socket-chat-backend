@@ -2,6 +2,9 @@ const express = require('express');
 const path = require('path');
 require('dotenv').config();
 
+// DB Config
+require('./database/config').dbConnection();
+
 // App de Express
 const app = express();
 
@@ -10,6 +13,8 @@ app.use( express.json() );
 
 // Node Server
 const server = require('http').createServer(app);
+module.exports.io = require('socket.io')(server);
+require('./sockets/socket');
 
 // Public Path
 const publicPath = path.resolve( __dirname, 'public' );
