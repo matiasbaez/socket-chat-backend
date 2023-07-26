@@ -8,13 +8,13 @@ const getUsers = async (req, res = response) => {
     const perPage = 10;
     const skip = (page - 1) * perPage;
 
-    const users = await User.find({ _id: { $ne: req.uid }})
+    const users = await User.find()
         .sort({ online: 1 })
         .limit(perPage)
         .skip(skip);
 
     return res.json({
-        success: true,
+        ok: true,
         data: users,
     });
 

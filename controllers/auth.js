@@ -1,7 +1,7 @@
 const { response } = require('express');
 const bcrypt = require('bcryptjs');
 
-const user = require('../models/user');
+const User = require('../models/user');
 const { generateJWT } = require('../helpers/jwt');
 
 const createUser = async (req, res = response ) => {
@@ -10,7 +10,7 @@ const createUser = async (req, res = response ) => {
 
     try {
 
-        const exists = await user.findOne({ email });
+        const exists = await User.findOne({ email });
         if( exists ) {
             return res.status(400).json({
                 ok: false,
@@ -18,7 +18,7 @@ const createUser = async (req, res = response ) => {
             });
         }
 
-        const user = new user( req.body );
+        const user = new User( req.body );
 
         // Encript password
         const salt = bcrypt.genSaltSync();
@@ -50,8 +50,8 @@ const login = async ( req, res = response ) => {
 
     try {
         
-        const exists = await user.findOne({ email });
-        if ( !exists ) {
+        const userDB = await User.findOne({ email });
+        if ( !userDB ) {
             return res.status(404).json({
                 ok: false,
                 msg: 'Email not found'
@@ -96,7 +96,7 @@ const renewToken = async( req, res = response) => {
     const token = await generateJWT( uid );
 
     // Get user by UID, user.findById... 
-    const user = await user.findById( uid );
+    const user = await User.findById( uid );
 
     res.json({
         ok: true,
