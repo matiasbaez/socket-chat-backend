@@ -4,7 +4,7 @@
 */
 const { Router } = require('express');
 
-const { getUsers } = require('../controllers/users');
+const { getUsers } = require('../controllers/user');
 const { validateJWT } = require('../middlewares/check-jwt');
 
 const router = Router();
